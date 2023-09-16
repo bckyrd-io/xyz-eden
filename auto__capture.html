@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Capture Form</title>
+</head>
+<body>
+    <h1>Camera Capture</h1>
+    <video id="camera" autoplay></video>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const video = document.getElementById('camera');
+        const canvas = document.getElementById('canvas');
+
+        // Function to capture an image from the camera
+        function captureImage() {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Capture the image data as a Blob
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    // Create a FormData object to send the Blob as a file
+                    const formData = new FormData();
+                    formData.append('file', blob, 'captured_image.jpg');
+
+                    // Create a fetch request to send the captured image data to the server
+                    fetch('http://localhost:8000/capture', {
+                        method: 'POST',
+                        body: formData, // Send the image data as a file upload
+                    })
+                    .then((response) => {
+                        if (response.ok) {
+                            console.log('Image captured and sent successfully');
+                        } else {
+                            console.error('Failed to send the image');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error sending the image:', error);
+                    });
+                }
+            }, 'image/jpeg');
+        }
+
+        // Request access to the camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+
+                // Capture 6 photos at 5-second intervals (30 seconds total)
+                for (let i = 0; i < 6; i++) {
+                    setTimeout(captureImage, i * 5000);
+                }
+            })
+            .catch((error) => {
+                console.error('Error accessing the camera:', error);
+            });
+    </script>
+</body>
+</html>
