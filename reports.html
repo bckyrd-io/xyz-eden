@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elegant Dashboard | Dashboard</title>
+    <title>Research</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="./img/svg/logo.svg" type="image/x-icon">
     <!-- Custom styles -->
@@ -38,7 +38,7 @@
                 <div class="sidebar-body">
                     <ul class="sidebar-body-menu">
                         <li>
-                            <a class="" href="/"><span class="icon home" aria-hidden="true"></span>Reports</a>
+                            <a class="active" href="/"><span class="icon home" aria-hidden="true"></span>Reports</a>
                         </li>
                         <li>
                             <a class="show-cat-btn" href="##">
@@ -82,7 +82,7 @@
                             <span class="msg-counter">7</span>
                         </li>
                         <li>
-                            <a class="show-cat-btn active" href="##">
+                            <a class="show-cat-btn" href="##">
                                 <span class="icon user-3" aria-hidden="true"></span>Users
                                 <span class="category__btn transparent-btn" title="Open list">
                                     <span class="sr-only">Open list</span>
@@ -91,10 +91,10 @@
                             </a>
                             <ul class="cat-sub-menu">
                                 <li>
-                                    <a href="users.html">user</a>
+                                    <a href="users-01.html">Users-01</a>
                                 </li>
                                 <li>
-                                    <a href="add__user.html">new</a>
+                                    <a href="users-02.html">Users-02</a>
                                 </li>
                             </ul>
                         </li>
@@ -231,55 +231,36 @@
             <!-- ! Main -->
             <main class="main users chart-page" id="skip-target">
                 <div class="container">
-                    <h2 class="main-title">Access Control</h2>
+                    <h2 class="main-title">Dashboard</h2>
 
                     <div class="row">
-                        <div class="col-lg-12">
-
-                            <div class="users-table table-wrapper">
-                                <table class="posts-table">
-                                    <thead>
-                                        <tr class="users-table-info">
-                                            <th>Author</th>
-                                            <th>Status</th>
-                                            <th>Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="pages-table-img">
-                                                    <picture>
-                                                        <source srcset="./img/avatar/avatar-face-04.webp"
-                                                            type="image/webp"><img src="./img/avatar/avatar-face-04.png"
-                                                            alt="User Name">
-                                                    </picture>
-                                                    Jenny Wilson
-                                                </div>
-                                            </td>
-                                            <td><span class="badge-pending">Pending</span></td>
-                                            <td>17.04.2021</td>
-                                            <td>
-                                                <span class="p-relative">
-                                                    <button class="dropdown-btn transparent-btn" type="button"
-                                                        title="More info">
-                                                        <div class="sr-only">More info</div>
-                                                        <i data-feather="more-horizontal" aria-hidden="true"></i>
-                                                    </button>
-                                                    <ul class="users-item-dropdown dropdown">
-                                                        <li><a href="##">Edit</a></li>
-                                                        <li><a href="##">Quick edit</a></li>
-                                                        <li><a href="##">Trash</a></li>
-                                                    </ul>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="col-lg-9">
+                            <div class="chart">
+                                <!-- <canvas id="myChart" aria-label="Site statistics" role="img"></canvas> -->
+                                <canvas id="myChart" aria-label="Site statistics" role="img">
+                                </canvas>
                             </div>
                         </div>
-
+                        <div class="col-lg-3">
+                            <article class="white-block">
+                                <div class="top-cat-title">
+                                    <h3>Top Growth</h3>
+                                    <p>28 Categories, 1400 Posts</p>
+                                </div>
+                                <ul class="top-cat-list">
+                                    <li>
+                                        <a href="##">
+                                            <div class="top-cat-list__title">
+                                                tomatoes <span>8.2k</span>
+                                            </div>
+                                            <div class="top-cat-list__subtitle">
+                                                Dailiy lifestyle articles <span class="danger">+472</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </article>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -299,12 +280,20 @@
             </footer> -->
         </div>
     </div>
+
+
+
     <!-- Chart library -->
     <script src="./plugins/chart.min.js"></script>
     <!-- Icons library -->
     <script src="plugins/feather.min.js"></script>
     <!-- Custom scripts -->
     <script src="js/script.js"></script>
+    <!-- crop growth -->
+    <script>
+
+    </script>
+
 </body>
 
 </html>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elegant Dashboard | Dashboard</title>
+    <title>Research</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="./img/svg/logo.svg" type="image/x-icon">
     <!-- Custom styles -->
@@ -305,7 +305,8 @@
                     <div class="row">
                         <div class="col-lg-9">
                             <div class="chart">
-                                <canvas id="myChart" aria-label="Site statistics" role="img"></canvas>
+                                <!-- <canvas id="myChart" aria-label="Site statistics" role="img"></canvas> -->
+                                <canvas id="image-count-chart" aria-label="Site statistics" role="img"></canvas>
                             </div>
                             <div class="users-table table-wrapper">
                                 <table class="posts-table">
@@ -695,12 +696,123 @@
             </footer> -->
         </div>
     </div>
+
+
+
     <!-- Chart library -->
     <script src="./plugins/chart.min.js"></script>
     <!-- Icons library -->
     <script src="plugins/feather.min.js"></script>
     <!-- Custom scripts -->
     <script src="js/script.js"></script>
+
+
+    <script>
+        // JavaScript code to fetch images from the API and create charts goes here
+        async function fetchDataAndCreateChart() {
+            try {
+                const response = await fetch('http://localhost:8000/images');
+                const imagesData = await response.json();
+
+                // Extract timestamps and counts from the data
+                const timestamps = imagesData.map(image => new Date(image.timestamp));
+                const counts = Array.from({ length: timestamps.length }, (_, i) => i + 1);
+
+                // Create the chart using the fetched data
+                var ctx = document.getElementById('image-count-chart');
+
+                if (ctx) {
+                    var myCanvas = ctx.getContext('2d');
+                    var myChart = new Chart(myCanvas, {
+                        type: 'line',
+                        data: {
+                            labels: timestamps,
+                            datasets: [{
+                                label: 'Captured Images',
+                                data: counts,
+                                cubicInterpolationMode: 'monotone',
+                                tension: 0.4,
+                                backgroundColor: ['rgba(95, 46, 234, 1)'],
+                                borderColor: ['rgba(95, 46, 234, 1)'],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    min: 0,
+                                    ticks: {
+                                        stepSize: 1
+                                    },
+                                    grid: {
+                                        display: false
+                                    }
+                                },
+                                x: {
+                                    type: 'time',
+                                    time: {
+                                        unit: 'day',
+                                        displayFormats: {
+                                            day: 'MMM D',
+                                        },
+                                    },
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.1)'
+                                    }
+                                }
+                            },
+                            elements: {
+                                point: {
+                                    radius: 2
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    align: 'end',
+                                    labels: {
+                                        boxWidth: 8,
+                                        boxHeight: 8,
+                                        usePointStyle: true,
+                                        font: {
+                                            size: 12,
+                                            weight: '500'
+                                        }
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: ['Captured Image Statistics'],
+                                    align: 'start',
+                                    color: '#171717',
+                                    font: {
+                                        size: 16,
+                                        family: 'Inter',
+                                        weight: '600',
+                                        lineHeight: 1.4
+                                    }
+                                }
+                            },
+                            tooltips: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            hover: {
+                                mode: 'nearest',
+                                intersect: true
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Call the function to fetch data and create the chart
+        fetchDataAndCreateChart();
+    </script>
+
 </body>
 
 </html>

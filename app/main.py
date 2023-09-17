@@ -101,3 +101,12 @@ async def capture_image(file: UploadFile = File(...)):
         # Log any exceptions for debugging purposes
         print("Error:", str(e))
         raise HTTPException(status_code=500, detail="Image capture error")
+    
+
+@app.get("/images")
+async def get_images():
+    db = SessionLocal()
+    images = db.query(CapturedImage).all()
+    db.close()
+    return [{"id": image.id, "filename": image.filename, "timestamp": image.timestamp} for image in images]
+
