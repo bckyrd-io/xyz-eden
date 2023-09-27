@@ -11,8 +11,6 @@ from pydantic import BaseModel
 from passlib.context import CryptContext
 from typing import Optional
 from fastapi import FastAPI, Depends
-# from fastapi_auth import login, logout, get_current_user
-# from fastapi_auth.schemas import LoginSchema, ChangeRoleSchema
 
 
 app = FastAPI()
