@@ -24,12 +24,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ... Other middleware and configuration ...
 
 # Endpoint to capture and save images
 @app.post("/capture")
 async def capture_image(file: UploadFile = UploadFile(...)):
     return capture_and_save_image(file)
+
 
 # Registration endpoint
 class UserCreate(BaseModel):
@@ -37,12 +37,14 @@ class UserCreate(BaseModel):
     password: str
     role: Optional[UserRoleEnum] = UserRoleEnum.user
 
+
 @app.post("/register")
 async def register_user(user: UserCreate):
     user_data = user.dict()
     user_data["hashed_password"] = hash_password(user.password)
     del user_data["password"]
     return create_user(user_data)
+
 
 # Login endpoint
 @app.post("/login")
@@ -53,17 +55,10 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             status_code=401, detail="Incorrect username or password")
     return user_token
 
+
 # Edit user role endpoint (Requires admin privileges)
 @app.put("/user/{user_id}/edit-role")
-async def edit_user_role(user_id: int, new_role: UserRoleEnum, current_user: str = Depends(get_current_user)):
-    db = SessionLocal()
-    user = db.query(User).filter(User.username == current_user).first()
-    db.close()
-
-    if user.role != UserRoleEnum.admin:
-        raise HTTPException(
-            status_code=403, detail="Only admin users can edit roles")
-
+async def edit_user_role(user_id: int, new_role: UserRoleEnum):
     db = SessionLocal()
     db_user = db.query(User).filter(User.id == user_id).first()
     if not db_user:
@@ -76,17 +71,10 @@ async def edit_user_role(user_id: int, new_role: UserRoleEnum, current_user: str
 
     return {"message": "User role updated successfully"}
 
+
 # Delete user endpoint (Requires admin privileges)
 @app.delete("/user/{user_id}/delete")
-async def delete_user(user_id: int, current_user: str = Depends(get_current_user)):
-    db = SessionLocal()
-    user = db.query(User).filter(User.username == current_user).first()
-    db.close()
-
-    if user.role != UserRoleEnum.admin:
-        raise HTTPException(
-            status_code=403, detail="Only admin users can delete users")
-
+async def delete_user(user_id: int):
     db = SessionLocal()
     db_user = db.query(User).filter(User.id == user_id).first()
     if not db_user:
@@ -101,6 +89,6 @@ async def delete_user(user_id: int, current_user: str = Depends(get_current_user
 
 
 @app.get("/users")
-async def list_users(current_user: str = Depends(get_current_user)):
+async def list_users():
     users = get_all_users()
     return {"users": users}

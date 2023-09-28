@@ -18,6 +18,7 @@
     <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
     <div class="page-flex">
         <!-- ! Sidebar -->
+        <!-- ! Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-start">
                 <div class="sidebar-head">
@@ -109,8 +110,8 @@
                 <a href="##" class="sidebar-user">
                     <span class="sidebar-user-img">
                         <picture>
-                            <source srcset="./img/avatar/avatar-illustrated-01.webp" type="image/webp"><img
-                                src="./img/avatar/avatar-illustrated-01.png" alt="User name">
+                            <source srcset="./img/avatar/avatar-illustrated-02.webp" type="image/webp"><img
+                                src="./img/avatar/avatar-illustrated-02.png" alt="User name">
                         </picture>
                     </span>
                     <div class="sidebar-user-info">
@@ -232,10 +233,8 @@
             <main class="main users chart-page" id="skip-target">
                 <div class="container">
                     <h2 class="main-title">Access Control</h2>
-
                     <div class="row">
                         <div class="col-lg-12">
-
                             <div class="users-table table-wrapper">
                                 <table class="posts-table">
                                     <thead>
@@ -245,52 +244,115 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="pages-table-img">
-                                                    <picture>
-                                                        <source srcset="./img/avatar/avatar-face-04.webp"
-                                                            type="image/webp"><img src="./img/avatar/avatar-face-04.png"
-                                                            alt="User Name">
-                                                    </picture>
-                                                    Jenny Wilson
-                                                </div>
-                                            </td>
-                                            <td><span class="badge-pending">Pending</span></td>
-                                            <td>
-                                                <span class="p-relative">
-                                                    <button class="dropdown-btn transparent-btn" type="button"
-                                                        title="More info">
-                                                        <div class="sr-only">More info</div>
-                                                        <i data-feather="more-horizontal" aria-hidden="true"></i>
-                                                    </button>
-                                                    <ul class="users-item-dropdown dropdown">
-                                                        <li><a href="##">Edit Role</a></li>
-                                                        <li><a href="##">Delete</a></li>
-                                                    </ul>
-                                                </span>
-                                            </td>
-                                        </tr>
+                                    <tbody id="userTableBody">
+                                        <!-- User data will be inserted here -->
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </main>
+
         </div>
     </div>
+
+
     <!-- Chart library -->
     <script src="./plugins/chart.min.js"></script>
     <!-- Icons library -->
     <script src="plugins/feather.min.js"></script>
     <!-- Custom scripts -->
     <script src="js/script.js"></script>
-    sc
     <script>
+        // Function to fetch users and populate the table
+        async function fetchAndPopulateUsers() {
+            const response = await fetch("http://localhost:8000/users", {
+                method: "GET",
+            });
 
+            if (response.status === 200) {
+                const userData = await response.json();
+
+                // Reference to the tbody where user data will be inserted
+                const userTableBody = document.getElementById("userTableBody");
+
+                // Clear any existing table rows
+                userTableBody.innerHTML = "";
+
+                // Loop through user data and create table rows
+                userData.users.forEach(user => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>
+                            <div class="pages-table-img">
+                                <picture>
+                                    <source srcset="./img/avatar/avatar-illustrated-02.webp" type="image/webp">
+                                    <img src="./img/avatar/avatar-illustrated-02.png" alt="${user.username}">
+                                </picture>
+                                ${user.username}
+                            </div>
+                        </td>
+                        <td><span class="badge-pending">${user.role}</span></td>
+                        <td>
+                            <a href="##" class="text-info" onclick="editUserRole(${user.id}, '${user.username}')">Edit</a>
+                            <a href="##" class="feather feather-info" onclick="deleteUser(${user.id}, '${user.username}')">Delete</a>
+                        </td>
+                    `;
+                    userTableBody.appendChild(row);
+                });
+            } else {
+                alert("Failed to fetch user data.");
+            }
+        }
+
+
+        // Function to edit user role
+        async function editUserRole(userId, username) {
+            const newRole = prompt(`Enter the new role for ${username} (admin or user):`);
+            if (newRole !== "admin" && newRole !== "user") {
+                alert("Invalid role. Please enter 'admin' or 'user'.");
+                return;
+            }
+
+            const response = await fetch(`http://localhost:8000/user/${userId}/edit-role?new_role=${newRole}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.status === 200) {
+                alert("User role updated successfully.");
+                fetchAndPopulateUsers();
+            } else {
+                alert("Failed to update user role.");
+            }
+        }
+
+
+        // Function to delete user
+        async function deleteUser(userId, username) {
+            const confirmDelete = confirm(`Are you sure you want to delete ${username}?`);
+            if (!confirmDelete) {
+                return;
+            }
+
+            const response = await fetch(`http://localhost:8000/user/${userId}/delete`, {
+                method: "DELETE",
+            });
+
+            if (response.status === 200) {
+                alert(`${username} deleted successfully.`);
+                // Refresh user data
+                fetchAndPopulateUsers();
+            } else {
+                alert(`Failed to delete ${username}.`);
+            }
+        }
+
+        // Fetch and populate users when the page loads
+        fetchAndPopulateUsers();
     </script>
 </body>
 
