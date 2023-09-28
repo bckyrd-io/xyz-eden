@@ -43,14 +43,12 @@
     <script src="./plugins/chart.min.js"></script>
     <!-- Icons library -->
     <script src="plugins/feather.min.js"></script>
-    <script src="js/script.js"></script>
     <!-- Custom scripts -->
+    <script src="js/script.js"></script>
     <script>
         async function submitLoginForm() {
             const username = document.querySelector("#username").value;
             const password = document.querySelector("#password").value;
-
-            console.log(username, password);
 
             const formData = new FormData();
             formData.append('username', username);
@@ -63,15 +61,12 @@
 
             if (response.status === 200) {
                 // Login successful!
-                // Redirect to the dashboard page, for example.
-                window.location.href = "/dashboard";
+                window.location.href = "reports.html";
             } else {
                 // Login failed.
-                // Display an error message to the user.
                 alert("Login failed!");
             }
         }
-
 
     </script>
 </body>

@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from pydantic import BaseModel
 from jose import JWTError, jwt
 from capture import capture_and_save_image
-from users import create_user, get_user_by_username, UserRoleEnum, hash_password
+from users import create_user, get_all_users, get_user_by_username, UserRoleEnum, hash_password
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from users import authenticate_user, get_current_user
@@ -99,4 +99,8 @@ async def delete_user(user_id: int, current_user: str = Depends(get_current_user
 
     return {"message": "User deleted successfully"}
 
-# ... Define other endpoints and dependencies as needed ...
+
+@app.get("/users")
+async def list_users(current_user: str = Depends(get_current_user)):
+    users = get_all_users()
+    return {"users": users}
