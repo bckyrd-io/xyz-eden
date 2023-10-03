@@ -30,24 +30,35 @@ Follow these steps to get started with Research Plant Growth AI:
    ```shell
    git clone https://github.com/yourusername/research-plant-growth-ai.git
 
+2. **Create sql db:**
+   ```shell
+   db_python
 
-prerequisite
+3. **Clone the Repository:**
+   ```shell
+   git clone https://github.com/yourusername/research-plant-growth-ai.git
 
-create sql db = db_python
+4. **install python:**
+   ```shell
+   pip install --upgrade pip
 
-install python
+5. **pip install requirements:**
+   ```shell
+   pip install -r requirements.txt
+   pip install fastapi
+   pip install sqlalchemy
+   pip install pydantic
+   pip install python-jose
+   pip install passlib
+   pip install uvicorn
 
-do pip install these packages
- =
-pip install fastapi
-pip install sqlalchemy
-pip install pydantic
-pip install python-jose
-pip install passlib
-pip install uvicorn
+4. **cd into api folder:**
+   ```shell
+   cd api
 
-open terminal cd into = api folder
-run = uvicorn --reload main:app
-open your signup.html 
-====
-begin from there
+5. **run the api:**
+   ```shell
+   uvicorn --reload main:app
+
+5. **open the signup.html:**
+   ```shell
