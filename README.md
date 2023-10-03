@@ -42,9 +42,8 @@ Follow these steps to get started with Research Plant Growth AI:
    ```shell
    pip install --upgrade pip
 
-5. **pip install requirements:**
+5. **pip install pip requirements:**
    ```shell
-   pip install -r requirements.txt
    pip install fastapi
    pip install sqlalchemy
    pip install pydantic
@@ -60,5 +59,7 @@ Follow these steps to get started with Research Plant Growth AI:
    ```shell
    uvicorn --reload main:app
 
-5. **open the signup.html:**
+5. **start using from this page:**
    ```shell
+   signup.html
+ 
