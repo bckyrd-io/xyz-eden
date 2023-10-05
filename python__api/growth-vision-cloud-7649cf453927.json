@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "growth-vision-cloud",
+  "private_key_id": "7649cf45392703b73bdc4504923b51d1ed908638",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC2aQggnxECEaZL\n/inotxFZXFWpkYkOaqI8QxsI936lmBnc6wHtJCi4mFtTxk9mTrS6MOL9GeHuxBLm\nw4NmlYgsVIoWMN3tYBfbNw7zsemmXqNj6xbgl6hA4foL8FGZhoWiJePJEz7u8bo/\nbdQBOZBixX/Fhve1QhTPjjOT453uTRe6s2jtM4FvYuajB/RiDOh01/61CRmGfFvB\nQ3f2xbmX/kO44EXQf2b+6ciMyXjcLUfwJZ7PIgd72DoTZAa0E1lDbaxXqr8PvJi5\nIKptJiUYL5E4xX0B5hq6gAXPA+jApLcpHmKruNzilFhNWKdIrvMJyV9BYWbhXIEA\nPF3EUUGVAgMBAAECggEAGr0XOKbwiI/bQ2j4rjkFpUZ8dRyVDWSyrug8UoprCW2c\nHu7hC6jBAlwtCQD5Gxte8Ssg3u6YGJar2aFfxd4WBb+HtVyI75amMJdnzO+vuxhE\n1az8n8QDYS1u6Kib4YgfVyc8NnmogEC1Zz5bdSmBwYTHZ8ZS0cJjyBAFfgB/4lIx\nz2HIpf2W7eCofT7nE8ewDCRwfaDbFzOgByWEJpXf3iKBDyxC0Rb0fRhYL5FjiFr2\n5hRchng4aWSTZnQNobfmTwJnGS0lhGPX7EXwEoVTeI5PeMLTEloVmRPGfVdzVwMC\ne3JY/smSf/veF0SJPg2fboEjcViLb8W6+0NOfOPAKQKBgQDeHmCteTm2QK3U12w6\nSpPF3cz2Y7OoFzsLMInJKWRde7PXGwy764JpV1VuFUr+rKEgY1qCMM8ewoRcDQ89\nYfoXY4ovXyjaJUXx6AIfB1t651ijJlsaGZOSQTpfnS/nv4o4FmKZ5oLIq8ZcGOCl\nc08w3SQZ/bg7PfjHRbkuwP5HqQKBgQDSPA/KtVSDFKgYdAau3+zYU6ac5enThiqm\ntEXBo7+4q/47kPeByL9di7yjN8v+UdSCmtLBx7i2yF7l/CqPfMmt4YxpxoQZz6BG\nJf1x+7cy3wQqAgTqXhhtumxHvp4OmIOuvaa2xdKFc/VgH9psotHipDnvIcc/mjfc\n520vjdVuDQKBgQCQ76mOCKhL8HB9jgQlFTzPxCdWL0Cv0ljIuGdwR/4hsfJrzk7E\n4Kw8KKyqJGLHQ8Xv6GTKxyafn7XWiv8Cwsf6Mw2cU6/IiMHXU9juflKHJCaGbyTL\nJx1QNhftBBiaVDXQ22qDmhKE9vF8bw9HZrKp4+MGwrRQk+OdxDVN+Mjz4QKBgQCV\nMFAYjoNRndgHulZ/xKJDhWEn2DQNihk8QZN67aQA/fSk+qPZcsbyMFaGEPNvH0zJ\n/epv3zYiZ6CIXmEpf+lyvisxaNGXq3JWNWFcgL8pl39R/CrW0j1NqMxsQUXSn8Ja\nv3TOISXa1EYdl50eGJEO33HJU9QcO2lHFuexpln+BQKBgQCGvOqfDD5YcMuLBdyf\nEeCf4qWp+20CBZX/HOjMUyBnyoN8lvuEhhstlSEqj16B6sVPVbUDKzsh8LYlmjvU\nVDveCgtRQsexqmHvXGUpOGzLnaah2PPsdfCOyrGQhq0It8RJcXHZeiVpJNrlf2Q8\n5sxuqsNIhGq4ha9hQjLyLax0kA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "sa-growth-vision-api@growth-vision-cloud.iam.gserviceaccount.com",
+  "client_id": "108530665827641407979",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sa-growth-vision-api%40growth-vision-cloud.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
