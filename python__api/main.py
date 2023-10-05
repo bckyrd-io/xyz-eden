@@ -11,6 +11,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from users import authenticate_user, get_current_user
 from models import SessionLocal, User  # Add this import
+from models import CapturedImage
+
 
 app = FastAPI()
 
@@ -29,6 +31,14 @@ app.add_middleware(
 @app.post("/capture")
 async def capture_image(file: UploadFile = UploadFile(...)):
     return capture_and_save_image(file)
+
+
+@app.get("/images")
+async def get_images():
+    db = SessionLocal()
+    images = db.query(CapturedImage).all()
+    db.close()
+    return [{"id": image.id, "filename": image.filename, "timestamp": image.timestamp} for image in images]
 
 
 # Registration endpoint
