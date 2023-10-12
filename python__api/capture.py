@@ -1,9 +1,8 @@
-# capture.py
 import os
 import uuid
 from fastapi import UploadFile, HTTPException
-from sqlalchemy.orm import Session
 from models import SessionLocal, CapturedImage
+from predict import predict_and_store_predictions  # Import the prediction function from predict.py
 
 upload_directory = "img"
 
@@ -20,6 +19,12 @@ def capture_and_save_image(file: UploadFile):
         db.commit()
         db.refresh(db_image)
         db.close()
+
+        # Now, call the prediction function from predict.py
+        image_id = db_image.id
+        image_path = os.path.join(upload_directory, db_image.filename)
+        predict_and_store_predictions(image_id, image_path)
+
         return {"message": "Image captured and saved successfully"}
     except Exception as e:
         print("Error:", str(e))

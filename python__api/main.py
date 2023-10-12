@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session  # Add this import
 from typing import Optional
 from datetime import datetime, timedelta
 from pydantic import BaseModel
-from jose import JWTError, jwt
 from capture import capture_and_save_image
 from users import create_user, get_all_users, get_user_by_username, UserRoleEnum, hash_password
 from fastapi.security import OAuth2PasswordRequestForm
