@@ -5,11 +5,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research</title>
+    <title>Elegant Dashboard | Dashboard</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="./img/svg/logo.svg" type="image/x-icon">
     <!-- Custom styles -->
     <link rel="stylesheet" href="./css/style.min.css">
+    <!-- datatables -->
+    <link rel="stylesheet" href="./plugins/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="./plugins/buttons.dataTables.min.css">
 </head>
 
 <body>
@@ -17,6 +20,7 @@
     <!-- ! Body -->
     <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
     <div class="page-flex">
+        <!-- ! Sidebar -->
         <!-- ! Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-start">
@@ -38,7 +42,7 @@
                 <div class="sidebar-body">
                     <ul class="sidebar-body-menu">
                         <li>
-                            <a class="" href="reports.html"><span class="icon home"
+                            <a class="active" href="reports.html"><span class="icon home"
                                     aria-hidden="true"></span>Reports</a>
                         </li>
                         <li>
@@ -46,7 +50,7 @@
                                     aria-hidden="true"></span>capture</a>
                         </li>
                         <li>
-                            <a class="active" href="analyse.html"><span class="icon category"
+                            <a class="" href="analyse.html"><span class="icon category"
                                     aria-hidden="true"></span>Analysis</a>
                         </li>
                         <li>
@@ -61,15 +65,14 @@
                         </li>
                     </ul>
 
-
                 </div>
             </div>
             <div class="sidebar-footer">
                 <a href="##" class="sidebar-user">
                     <span class="sidebar-user-img">
                         <picture>
-                            <source srcset="./img/avatar/avatar-illustrated-01.webp" type="image/webp"><img
-                                src="./img/avatar/avatar-illustrated-01.png" alt="User name">
+                            <source srcset="./img/avatar/avatar-illustrated-02.webp" type="image/webp"><img
+                                src="./img/avatar/avatar-illustrated-02.png" alt="User name">
                         </picture>
                     </span>
                     <div class="sidebar-user-info">
@@ -79,6 +82,7 @@
                 </a>
             </div>
         </aside>
+
         <div class="main-wrapper">
             <!-- ! Main nav -->
             <nav class="main-nav--bg">
@@ -190,31 +194,25 @@
             <!-- ! Main -->
             <main class="main users chart-page" id="skip-target">
                 <div class="container">
-                    <h2 class="main-title">Growth analysis</h2>
-                    <div class="row stat-cards" id="growthList">
-
-                        <!-- <div class="col-md-6 col-xl-3">
-                            <article class="stat-cards-item">
-                                <div class="stat-cards-icon success">
-                                    <i data-feather="feather" aria-hidden="true"></i>
-                                </div>
-                                <div class="stat-cards-info">
-                                    <p class="stat-cards-info__num">1478 286</p>
-                                    <p class="stat-cards-info__title">Total visits</p>
-                                    <p class="stat-cards-info__progress">
-                                        <span class="stat-cards-info__profit warning">
-                                            <i data-feather="trending-up" aria-hidden="true"></i>0.00%
-                                        </span>
-                                        Last month
-                                    </p>
-                                </div>
-                            </article>
-                        </div> -->
-
-
-
+                    <h2 class="main-title">Tomato</h2>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="users-table table-wrapper">
+                                <table id="example" class=" display nowrap" style="width:100%">
+                                    <thead>
+                                        <tr class="users-table-info">
+                                            <th>Name</th>
+                                            <th>Role</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userTableBody">
+                                        <!-- User data will be inserted here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             </main>
 
@@ -222,56 +220,123 @@
     </div>
 
 
-
     <!-- Chart library -->
     <script src="./plugins/chart.min.js"></script>
     <!-- Icons library -->
     <script src="plugins/feather.min.js"></script>
+    <!-- datatables -->
+    <script src="plugins/jquery-3.7.0.js"></script>
+    <script src="plugins/jquery.dataTables.min.js"></script>
+    <script src="plugins/dataTables.buttons.min.js"></script>
+    <script src="plugins/jszip.min.js"></script>
+    <script src="plugins/pdfmake.min.js"></script>
+    <script src="plugins/vfs_fonts.js"></script>
+    <script src="plugins/buttons.html5.min.js"></script>
+    <script src="plugins/buttons.print.min.js"></script>
+    
     <!-- Custom scripts -->
     <script src="js/script.js"></script>
-
-
     <script>
-        const growthList = document.getElementById("growthList");
-
-        fetch("http://localhost:8000/growth_stage")
-            .then((response) => response.json())
-            .then((data) => {
-                for (const date in data) {
-                    for (const plant in data[date]) {
-                        data[date][plant].forEach((growthStage) => {
-                            growthList.innerHTML += `
-                        <div class="col-md-6 col-xl-3">
-                            <article class="stat-cards-item">
-                                <div class="stat-cards-icon success">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M384 312.7c-55.1 136.7-187.1 54-187.1 54-40.5 81.8-107.4 134.4-184.6 134.7-16.1 0-16.6-24.4 0-24.4 64.4-.3 120.5-42.7 157.2-110.1-41.1 15.9-118.6 27.9-161.6-82.2 109-44.9 159.1 11.2 178.3 45.5 9.9-24.4 17-50.9 21.6-79.7 0 0-139.7 21.9-149.5-98.1 119.1-47.9 152.6 76.7 152.6 76.7 1.6-16.7 3.3-52.6 3.3-53.4 0 0-106.3-73.7-38.1-165.2 124.6 43 61.4 162.4 61.4 162.4.5 1.6.5 23.8 0 33.4 0 0 45.2-89 136.4-57.5-4.2 134-141.9 106.4-141.9 106.4-4.4 27.4-11.2 53.4-20 77.5 0 0 83-91.8 172-20z"/></svg>
-                                </div>
-                                <div class="stat-cards-info">
-                                    <p class="stat-cards-info__num">${growthStage}</p>
-                                    <p class="stat-cards-info__title">${plant}</p>
-                                    <p class="stat-cards-info__progress">
-                                        <span class="stat-cards-info__profit warning">
-                                            <i data-feather="trending-up" aria-hidden="true"></i>0.00%
-                                        </span>
-                                        ${date}
-                                    </p>
-                                </div>
-                            </article>
-                        </div>
-                    `;
-                        });
-                    }
-                }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
+        // Function to fetch users and populate the table
+        async function fetchAndPopulateUsers() {
+            const response = await fetch("http://localhost:8000/users", {
+                method: "GET",
             });
 
+            if (response.status === 200) {
+                const userData = await response.json();
+
+                // Reference to the tbody where user data will be inserted
+                const userTableBody = document.getElementById("userTableBody");
+
+                // Clear any existing table rows
+                userTableBody.innerHTML = "";
+
+                // Loop through user data and create table rows
+                userData.users.forEach(user => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>
+                            <div class="pages-table-img">
+                                <picture>
+                                    <source srcset="./img/avatar/avatar-illustrated-02.webp" type="image/webp">
+                                    <img src="./img/avatar/avatar-illustrated-02.png" alt="${user.username}">
+                                </picture>
+                                ${user.username}
+                            </div>
+                        </td>
+                        <td><span class="badge-pending">${user.role}</span></td>
+                        <td>
+                            <a href="##" class="text-info" onclick="editUserRole(${user.id}, '${user.username}')">Edit</a>
+                            <a href="##" class="feather feather-info" onclick="deleteUser(${user.id}, '${user.username}')">Delete</a>
+                        </td>
+                    `;
+                    userTableBody.appendChild(row);
+                });
+            } else {
+                alert("Failed to fetch user data.");
+            }
+        }
+
+
+        // Function to edit user role
+        async function editUserRole(userId, username) {
+            const newRole = prompt(`Enter the new role for ${username} (admin or user):`);
+            if (newRole !== "admin" && newRole !== "user") {
+                alert("Invalid role. Please enter 'admin' or 'user'.");
+                return;
+            }
+
+            const response = await fetch(`http://localhost:8000/user/${userId}/edit-role?new_role=${newRole}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.status === 200) {
+                alert("User role updated successfully.");
+                fetchAndPopulateUsers();
+            } else {
+                alert("Failed to update user role.");
+            }
+        }
+
+
+        // Function to delete user
+        async function deleteUser(userId, username) {
+            const confirmDelete = confirm(`Are you sure you want to delete ${username}?`);
+            if (!confirmDelete) {
+                return;
+            }
+
+            const response = await fetch(`http://localhost:8000/user/${userId}/delete`, {
+                method: "DELETE",
+            });
+
+            if (response.status === 200) {
+                alert(`${username} deleted successfully.`);
+                // Refresh user data
+                fetchAndPopulateUsers();
+            } else {
+                alert(`Failed to delete ${username}.`);
+            }
+        }
+
+        // Fetch and populate users when the page loads
+        fetchAndPopulateUsers();
     </script>
-
-
-  
-
+    <!-- buttons -->
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+    </script>
 </body>
 
 </html>

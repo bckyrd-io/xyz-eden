@@ -1,9 +1,10 @@
 # main.py
-from fastapi import FastAPI, UploadFile, Depends, HTTPException, status, Form
+from sqlalchemy import func
+from fastapi import FastAPI, UploadFile, Depends, Query, HTTPException, status, Form
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session  # Add this import
 from typing import Optional
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 from pydantic import BaseModel
 from jose import JWTError, jwt
 from capture import capture_and_save_image
@@ -14,6 +15,8 @@ from models import SessionLocal, User  # Add this import
 from models import CapturedImage
 from predict import predict_and_store_predictions  # Add this import
 import os
+from models import ImagePrediction
+# -
 
 
 app = FastAPI()
@@ -54,6 +57,66 @@ async def get_images():
     images = db.query(CapturedImage).all()
     db.close()
     return [{"id": image.id, "filename": image.filename, "timestamp": image.timestamp} for image in images]
+
+
+@app.get("/diseases_today")
+async def get_diseases_today():
+    today = date.today()
+
+    db = SessionLocal()
+    # Query the database for predictions with diseases and timestamp for today
+    predictions = db.query(ImagePrediction).join(CapturedImage).filter(
+        ImagePrediction.disease.isnot(None),
+        CapturedImage.timestamp >= today,
+        CapturedImage.timestamp < today + timedelta(days=1)
+    )
+
+    # Get the results
+    results = predictions.all()
+
+    if not results:
+        raise HTTPException(
+            status_code=404, detail="No matching records found")
+
+    return results
+
+
+@app.get("/growth_stage")
+async def get_growth_stage():
+    db = SessionLocal()
+
+    try:
+        # Query the database for all predictions with growth stage
+        predictions = db.query(
+            ImagePrediction.captured_image_id,
+            ImagePrediction.plant_name,
+            ImagePrediction.growth_stage,
+            func.DATE(CapturedImage.timestamp).label("date")
+        ).join(CapturedImage).filter(
+            ImagePrediction.growth_stage.isnot(None)
+        ).all()
+
+        # Group data by date and plant name
+        data_grouped = {}
+        for prediction in predictions:
+            date_key = prediction.date
+            plant_name = prediction.plant_name
+            growth_stage = prediction.growth_stage
+
+            if date_key not in data_grouped:
+                data_grouped[date_key] = {}
+
+            if plant_name not in data_grouped[date_key]:
+                data_grouped[date_key][plant_name] = []
+
+            data_grouped[date_key][plant_name].append(growth_stage)
+
+        return data_grouped
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail="Error fetching data") from e
+    finally:
+        db.close()
 
 
 # Registration endpoint

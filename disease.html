@@ -57,8 +57,7 @@
                             <span class="msg-counter">7</span>
                         </li>
                         <li>
-                            <a class="" href="users.html"><span class="icon user-3"
-                                    aria-hidden="true"></span>users</a>
+                            <a class="" href="users.html"><span class="icon user-3" aria-hidden="true"></span>users</a>
                         </li>
                     </ul>
 
@@ -197,100 +196,20 @@
                         <div class="col-lg-12">
                             <article class="white-block">
                                 <div class="top-cat-title">
-                                    <h3>Top categories</h3>
-                                    <p>28 Categories, 1400 Posts</p>
+                                    <h3>Diseases Today</h3>
                                 </div>
-                                <ul class="top-cat-list">
-                                    <li>
-                                        <a href="##">
-                                            <div class="top-cat-list__title">
-                                                Lifestyle <span>8.2k</span>
-                                            </div>
-                                            <div class="top-cat-list__subtitle">
-                                                Dailiy lifestyle articles <span class="purple">+472</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="##">
-                                            <div class="top-cat-list__title">
-                                                Tutorials <span>8.2k</span>
-                                            </div>
-                                            <div class="top-cat-list__subtitle">
-                                                Coding tutorials <span class="blue">+472</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="##">
-                                            <div class="top-cat-list__title">
-                                                Technology <span>8.2k</span>
-                                            </div>
-                                            <div class="top-cat-list__subtitle">
-                                                Dailiy technology articles <span class="danger">+472</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="##">
-                                            <div class="top-cat-list__title">
-                                                UX design <span>8.2k</span>
-                                            </div>
-                                            <div class="top-cat-list__subtitle">
-                                                UX design tips <span class="success">+472</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="##">
-                                            <div class="top-cat-list__title">
-                                                Interaction tips <span>8.2k</span>
-                                            </div>
-                                            <div class="top-cat-list__subtitle">
-                                                Interaction articles <span class="warning">+472</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="##">
-                                            <div class="top-cat-list__title">
-                                                App development <span>8.2k</span>
-                                            </div>
-                                            <div class="top-cat-list__subtitle">
-                                                Mobile development articles <span class="warning">+472</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="##">
-                                            <div class="top-cat-list__title">
-                                                Nature <span>8.2k</span>
-                                            </div>
-                                            <div class="top-cat-list__subtitle">
-                                                Wildlife animal articles <span class="warning">+472</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="##">
-                                            <div class="top-cat-list__title">
-                                                Geography <span>8.2k</span>
-                                            </div>
-                                            <div class="top-cat-list__subtitle">
-                                                Geography articles <span class="primary">+472</span>
-                                            </div>
-                                        </a>
-                                    </li>
+                                <ul id="diseasesList" class="top-cat-list">
+                                    <!-- Data will be inserted here by JavaScript -->
                                 </ul>
                             </article>
                         </div>
                     </div>
+
                 </div>
             </main>
 
         </div>
     </div>
-
 
 
     <!-- Chart library -->
@@ -300,7 +219,33 @@
     <!-- Custom scripts -->
     <script src="js/script.js"></script>
 
+    <script>
+        const diseasesList = document.getElementById("diseasesList");
 
+        fetch("http://localhost:8000/diseases_today")
+            .then((response) => response.json())
+            .then((data) => {
+                data.forEach((entry) => {
+                    const listItem = document.createElement("li");
+                    listItem.innerHTML = `
+        <a href="#">
+            <div class="top-cat-list__title">
+                ${entry.plant_name} 
+            </div>
+            <div class="top-cat-list__subtitle">
+                ${entry.disease} articles <span class="danger">unhelthy</span>
+            </div>
+        </a>
+      `;
+                    diseasesList.appendChild(listItem);
+                });
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+
+    </script>
+    <!-- 
     <script>
         // JavaScript code to fetch images from the API and create charts goes here
         async function fetchDataAndCreateChart() {
@@ -405,7 +350,7 @@
 
         // Call the function to fetch data and create the chart
         fetchDataAndCreateChart();
-    </script>
+    </script> -->
 
 </body>
 
