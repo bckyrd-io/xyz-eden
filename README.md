@@ -2,7 +2,7 @@
 
 Research Plant Growth AI is an automated plant monitoring and analysis system designed to help you monitor the growth and health of your plants effectively. It allows you to capture images of your plants at regular intervals, timestamp them, perform growth analysis, generate reports, and more.
 
-![Plant Growth Image](link_to_sample_image.png)
+![Plant Growth Image](readme__image.jpg)
 
 ## Features
 

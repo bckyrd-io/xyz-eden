@@ -1,4 +1,4 @@
-# main.py
+import os
 from fastapi import FastAPI, UploadFile, Depends, HTTPException, status, Form
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session  # Add this import
@@ -8,12 +8,12 @@ from pydantic import BaseModel
 from jose import JWTError, jwt
 from capture import capture_and_save_image
 from users import create_user, get_all_users, get_user_by_username, UserRoleEnum, hash_password
+from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from users import authenticate_user, get_current_user
 from models import SessionLocal, User  # Add this import
 from models import CapturedImage
 from predict import predict_and_store_predictions  # Add this import
-import os
 
 
 app = FastAPI()
@@ -29,9 +29,12 @@ app.add_middleware(
 )
 
 
-# Endpoint to capture and save images
-upload_directory = "img"
+# # Endpoint to capture and save images
+# @app.post("/capture")
+# async def capture_image(file: UploadFile = UploadFile(...)):
+#     return capture_and_save_image(file)
 
+upload_directory = "img"
 
 @app.post("/capture")
 async def capture_image(file: UploadFile = UploadFile(...)):

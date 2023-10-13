@@ -34,8 +34,6 @@ class ImagePrediction(Base):
     disease = Column(String(255))  # Specify the length here
     growth_stage = Column(String(255))  # Specify the length here
     captured_image_id = Column(Integer, ForeignKey("captured_images.id"))
-    captured_image = relationship("CapturedImage", back_populates="predictions")
-
 
 
 Base.metadata.create_all(bind=engine)

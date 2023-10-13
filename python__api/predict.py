@@ -1,7 +1,9 @@
+# predict.py
 import tensorflow as tf
 import numpy as np
 from PIL import Image
 from models import SessionLocal, ImagePrediction
+
 
 class PlantPredictor:
     def __init__(self, plant_model, disease_model, growth_stage_model):
@@ -27,6 +29,7 @@ class PlantPredictor:
 
         return plant_name_prediction, disease_prediction, growth_stage_prediction
 
+
 def predict_and_store_predictions(image_id, image_path):
     # Load the Plant Name model, Disease model, and Growth Stage model (replace these paths with your actual model paths)
     plant_name_model = tf.keras.models.load_model('plant_name_model.h5')
@@ -34,10 +37,12 @@ def predict_and_store_predictions(image_id, image_path):
     growth_stage_model = tf.keras.models.load_model('growth_stage_model.h5')
 
     # Initialize the PlantPredictor class with the loaded models
-    plant_predictor = PlantPredictor(plant_name_model, disease_model, growth_stage_model)
+    plant_predictor = PlantPredictor(
+        plant_name_model, disease_model, growth_stage_model)
 
     # Use the PlantPredictor instance to make predictions
-    plant_name_prediction, disease_prediction, growth_stage_prediction = plant_predictor.predict(image_path)
+    plant_name_prediction, disease_prediction, growth_stage_prediction = plant_predictor.predict(
+        image_path)
 
     # Extract the predicted class indices
     predicted_plant_index = np.argmax(plant_name_prediction[0])
@@ -58,7 +63,7 @@ def predict_and_store_predictions(image_id, image_path):
         growth_stage=predicted_growth_stage,
         captured_image_id=image_id
     )
-    
+
     db.add(image_prediction)
     db.commit()
     db.close()

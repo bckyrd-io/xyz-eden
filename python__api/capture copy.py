@@ -19,10 +19,9 @@ def capture_and_save_image(file: UploadFile):
         db.add(db_image)
         db.commit()
         db.refresh(db_image)
-        image_id = db_image.id  # Get the image ID from the database after it's created
         db.close()
-
-        return {"id": image_id, "filename": unique_filename, "message": "Image captured and saved successfully"}
+        #-
+        return {"message": "Image captured and saved successfully"}
     except Exception as e:
         print("Error:", str(e))
         raise HTTPException(status_code=500, detail="Image capture error")
