@@ -17,6 +17,8 @@ from predict import predict_and_store_predictions  # Add this import
 import os
 from models import ImagePrediction
 # -
+from fastapi import FastAPI, Path, Query
+from pydantic import BaseModel
 
 
 app = FastAPI()
@@ -180,3 +182,27 @@ async def delete_user(user_id: int):
 async def list_users():
     users = get_all_users()
     return {"users": users}
+
+
+# testing class
+# for the reports pages
+class Item(BaseModel):
+    id: int
+    name: str
+    description: str
+
+items = [
+    Item(id=1, name="tomato", description="This is the tomatos with disease."),
+    Item(id=2, name="bannana", description="This is the health bananas."),
+    Item(id=3, name="cabbage", description="This is the sold cabbage."),
+]
+@app.get("/items")
+async def get_all_items():
+    return items
+
+@app.get("/item/{item_id}")
+async def get_item_by_id(item_id: int = Path(...)):
+    for item in items:
+        if item.id == item_id:
+            return item
+    raise HTTPException(status_code=404, detail="Item not found.")

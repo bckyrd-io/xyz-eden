@@ -208,14 +208,15 @@
                                 </div>
                                 <ul class="top-cat-list">
                                     <li>
-                                        <a href="plant__report.html">
+                                        <div id="items-list"></div>
+                                        <!-- <a href="plant__report.html">
                                             <div class="top-cat-list__title">
                                                 tomatoes <span>8.2k</span>
                                             </div>
                                             <div class="top-cat-list__subtitle">
                                                 Dailiy lifestyle articles <span class="danger">+472</span>
                                             </div>
-                                        </a>
+                                        </a> -->
                                     </li>
                                 </ul>
                             </article>
@@ -236,8 +237,27 @@
     <script src="js/script.js"></script>
     <!-- crop growth -->
     <script>
-
-    </script>
+        async function fetchItems() {
+          const response = await fetch('http://127.0.0.1:8000/items');
+          if (!response.ok) {
+            throw new Error(`Failed to fetch items: ${response.statusText}`);
+          }
+        
+          const items = await response.json();
+        
+          const itemsListElement = document.getElementById('items-list');
+          itemsListElement.innerHTML = '';
+        
+          for (const item of items) {
+            const itemListItemElement = document.createElement('li');
+            itemListItemElement.innerHTML = `<a href="/item/${item.id}">${item.name}</a>`;
+        
+            itemsListElement.appendChild(itemListItemElement);
+          }
+        }
+        
+        fetchItems();
+        </script>
 
 </body>
 
