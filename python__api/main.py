@@ -1,24 +1,24 @@
 # main.py
-from sqlalchemy import func
-from fastapi import FastAPI, UploadFile, Depends, Query, HTTPException, status, Form
-from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session  # Add this import
 from typing import Optional
 from datetime import datetime, date, timedelta
-from pydantic import BaseModel
 from jose import JWTError, jwt
-from capture import capture_and_save_image
-from users import create_user, get_all_users, get_user_by_username, UserRoleEnum, hash_password
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from users import authenticate_user, get_current_user
-from models import SessionLocal, User  # Add this import
-from models import CapturedImage
-from predict import predict_and_store_predictions  # Add this import
 import os
-from models import ImagePrediction
 # -
-from fastapi import FastAPI, Path, Query
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import FastAPI, Path, Query, UploadFile, Depends, Query, HTTPException, status, Form
+from fastapi.middleware.cors import CORSMiddleware
+# -
+from sqlalchemy import desc, func
+from sqlalchemy.orm import Session  # Add this import
 from pydantic import BaseModel
+# -
+from models import SessionLocal  # Add this import
+from models import User, CapturedImage, ImagePrediction, ScheduleCapture
+# -
+from users import create_user, get_all_users, get_user_by_username, UserRoleEnum, hash_password
+from users import authenticate_user, get_current_user
+from capture import capture_and_save_image
+from predict import predict_and_store_predictions  # Add this import
 
 
 app = FastAPI()
@@ -42,15 +42,50 @@ upload_directory = "img"
 async def capture_image(file: UploadFile = UploadFile(...)):
     # Capture and save the image
     image_data = capture_and_save_image(file)
-
     # Assuming the capture_and_save_image function returns the image ID
     image_id = image_data["id"]
-
     # Call the prediction function to make predictions on the saved image
     image_path = os.path.join(upload_directory, image_data["filename"])
     predict_and_store_predictions(image_id, image_path)  # Add this line
 
     return {"message": "Image captured, saved, and predictions made successfully"}
+
+
+# Pydantic model for scheduling captures
+class ScheduleCaptureCreate(BaseModel):
+    interval: int
+    times: int
+
+
+@app.post("/schedule")
+async def create_schedule(schedule_data: ScheduleCaptureCreate):
+    db = SessionLocal()
+    try:
+        # Insert the schedule data into the database
+        schedule = ScheduleCapture(**schedule_data.dict())
+        db.add(schedule)
+        db.commit()
+        db.refresh(schedule)
+        return schedule
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=500, detail="Failed to create schedule")
+    finally:
+        db.close()
+
+
+@app.get("/capture-settings")
+async def get_capture_settings():
+    db = SessionLocal()
+    settings = db.query(ScheduleCapture).order_by(
+        desc(ScheduleCapture.timestamp)).first()
+    db.close()
+
+    if settings:
+        return {"interval": settings.interval, "times": settings.times}
+    else:
+        return {"interval": 5, "times": 10}
 
 
 @app.get("/images")
@@ -59,6 +94,24 @@ async def get_images():
     images = db.query(CapturedImage).all()
     db.close()
     return [{"id": image.id, "filename": image.filename, "timestamp": image.timestamp} for image in images]
+
+
+@app.get("/items")
+async def get_all_items():
+    db = SessionLocal()
+    items = db.query(ImagePrediction).order_by(
+        desc(ImagePrediction.id)).limit(10).all()
+    return items
+
+
+@app.get("/item/{item_id}")
+async def get_item_by_id(item_id: int):
+    db = SessionLocal()
+    item = db.query(ImagePrediction).filter(
+        ImagePrediction.id == item_id).first()
+    if item is not None:
+        return item
+    raise HTTPException(status_code=404, detail="Item not found.")
 
 
 @app.get("/diseases_today")
@@ -182,27 +235,3 @@ async def delete_user(user_id: int):
 async def list_users():
     users = get_all_users()
     return {"users": users}
-
-
-# testing class
-# for the reports pages
-class Item(BaseModel):
-    id: int
-    name: str
-    description: str
-
-items = [
-    Item(id=1, name="tomato", description="This is the tomatos with disease."),
-    Item(id=2, name="bannana", description="This is the health bananas."),
-    Item(id=3, name="cabbage", description="This is the sold cabbage."),
-]
-@app.get("/items")
-async def get_all_items():
-    return items
-
-@app.get("/item/{item_id}")
-async def get_item_by_id(item_id: int = Path(...)):
-    for item in items:
-        if item.id == item_id:
-            return item
-    raise HTTPException(status_code=404, detail="Item not found.")

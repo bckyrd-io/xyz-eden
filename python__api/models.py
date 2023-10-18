@@ -26,9 +26,16 @@ class CapturedImage(Base):
     timestamp = Column(DateTime, default=datetime.utcnow)
 
 
+class ScheduleCapture(Base):
+    __tablename__ = 'schedule_captures'
+    id = Column(Integer, primary_key=True, index=True)
+    interval = Column(Integer)
+    times = Column(Integer)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
+
 class ImagePrediction(Base):
     __tablename__ = "image_predictions"
-
     id = Column(Integer, primary_key=True, index=True)
     plant_name = Column(String(255))  # Specify the length here
     disease = Column(String(255))  # Specify the length here

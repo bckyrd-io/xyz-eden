@@ -74,6 +74,7 @@
                         </li>
                     </ul>
 
+
                 </div>
             </div>
             <div class="sidebar-footer">
@@ -202,33 +203,24 @@
             <!-- ! Main -->
             <main class="main users chart-page" id="skip-target">
                 <div class="container">
-                    <h2 class="main-title">Camera Capture</h2>
+                    <h2 class="main-title">Schedule Capture</h2>
 
                     <div class="row">
-                        <div class="col-lg-6" hidden>
-                            <article class="sign-up-form form" action="" method="">
-                                <video id="camera" autoplay class="mb-2"
-                                    style="min-height: 60vh;width: 100% !important;background-color: rgba(3, 3, 3, 0.153);">
-                                </video>
-                            </article>
-                        </div>
 
                         <div class="col-lg-6">
-                            <article class="sign-up-form form" action="" method="">
-                                <canvas id="canvas" style="width: 100% !important;"></canvas>
-                                <form id="uploadForm" action="http://localhost:8000/upload" method="post"
-                                    enctype="multipart/form-data">
+                            <article class="sign-up-form form">
+                                <!-- Your existing HTML content -->
+                                <form id="uploadForm" method="post">
                                     <label class="form-label-wrapper">
-                                        <input class="form-input" type="file" name="file" accept="image/*">
-                                        <input type="submit" class="form-btn primary-default-btn transparent-btn mt-5"
-                                            value="Upload">
+                                        <input class="form-input" type="number" id="interval" name="interval" placeholder="intervals">
+                                        <input class="form-input" type="number" id="times" name="times" placeholder="number of times">
                                     </label>
                                     <br>
                                     <label class="form-label-wrapper">
-                                        <button id="captureButton"
-                                            class="form-btn primary-default-btn transparent-btn mt-5">Capture</button>
+                                        <button id="scheduleButton" class="form-btn primary-default-btn transparent-btn mt-5">Set</button>
                                     </label>
                                 </form>
+                                
                             </article>
                         </div>
 
@@ -240,92 +232,44 @@
     </div>
 
 
-    <!-- Camera Script -->
-    <script>
-        const video = document.getElementById('camera');
-        const canvas = document.getElementById('canvas');
-        const captureButton = document.getElementById('captureButton');
-        const uploadForm = document.getElementById('uploadForm');
-
-        // Function to capture an image from the camera
-        function captureImage() {
-            const context = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Capture the image data as a Blob
-            canvas.toBlob((blob) => {
-                if (blob) {
-                    // Create a FormData object to send the Blob as a file
-                    const formData = new FormData();
-                    formData.append('file', blob, 'captured_image.jpg');
-
-                    // Create a fetch request to send the captured image data to the server
-                    fetch('http://localhost:8000/capture', {
-                        method: 'POST',
-                        body: formData, // Send the image data as a file upload
-                    })
-                        .then((response) => {
-                            if (response.ok) {
-                                console.log('Image captured and sent successfully');
-                            } else {
-                                console.error('Failed to send the image');
-                            }
-                        })
-                        .catch((error) => {
-                            console.error('Error sending the image:', error);
-                        });
-                }
-            }, 'image/jpeg');
-        }
-
-        // Request access to the camera
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then((stream) => {
-                video.srcObject = stream;
-
-                // Automatically capture 6 photos at 5-second intervals (30 seconds total)
-                for (let i = 0; i < 6; i++) {
-                    setTimeout(captureImage, i * 5000);
-                }
-
-                // Capture an image when the "Capture Image" button is pressed
-                captureButton.addEventListener('click', () => {
-                    captureImage();
-                });
-
-                // Handle form submission to upload captured image
-                uploadForm.addEventListener('submit', (event) => {
-                    event.preventDefault();
-                    const formData = new FormData(uploadForm);
-
-                    fetch('http://localhost:8000/capture', {
-                        method: 'POST',
-                        body: formData,
-                    })
-                        .then((response) => {
-                            if (response.ok) {
-                                console.log('Image uploaded successfully');
-                            } else {
-                                console.error('Failed to upload the image');
-                            }
-                        })
-                        .catch((error) => {
-                            console.error('Error uploading the image:', error);
-                        });
-                });
-            })
-            .catch((error) => {
-                console.error('Error accessing the camera:', error);
-            });
-    </script>
     <!-- Chart library -->
     <script src="./plugins/chart.min.js"></script>
     <!-- Icons library -->
     <script src="plugins/feather.min.js"></script>
     <!-- Custom scripts -->
     <script src="js/script.js"></script>
+    <script>
+        // Add an event listener for the form submission
+        document.getElementById('uploadForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Serialize the form data into a JSON object
+            const formData = {
+                interval: parseInt(document.getElementById('interval').value),
+                times: parseInt(document.getElementById('times').value)
+            };
+
+            // Create a fetch request to send the JSON data to the FastAPI server
+            fetch('http://localhost:8000/schedule', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Set the content type to JSON
+                },
+                body: JSON.stringify(formData) // Convert the data to JSON
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        console.log('Form data sent successfully');
+                    } else {
+                        console.error('Failed to send form data');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error sending form data:', error);
+                });
+        });
+    </script>
+
 </body>
 
 </html>
