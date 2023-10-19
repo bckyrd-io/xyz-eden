@@ -40,11 +40,11 @@ Follow these steps to get started with Research Plant Growth AI:
 
 4. **pip install pip requirements:**
    ```shell
-   pip install fastapi uvicorn sqlalchemy mysql-connector-python passlib pydantic jose python-multipart --upgrade google-cloud-vision pandas pillow
+   pip install -r requirements.txt
 
 5. **cd into api folder:**
    ```shell
-   cd api
+   cd python__api
 
 6. **run the api:**
    ```shell
