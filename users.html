@@ -234,6 +234,7 @@
     <script src="./plugins/chart.min.js"></script>
     <!-- Icons library -->
     <script src="plugins/feather.min.js"></script>
+    <script src="plugins/sweetalert.min.js"></script>
     <!-- Custom scripts -->
     <script src="js/script.js"></script>
     <script>
@@ -281,11 +282,28 @@
 
         // Function to edit user role
         async function editUserRole(userId, username) {
-            const newRole = prompt(`Enter the new role for ${username} (admin or user):`);
+            const newRole = await swal({
+                title: `Enter the new role for ${username} (admin or user):`,
+                content: "input",
+                showCancelButton: true,
+                confirmButtonText: "OK",
+                cancelButtonText: "Cancel",
+            })
+                .then(result => {
+                    // The input field will be visible here
+                    return result;
+                });
+
             if (newRole !== "admin" && newRole !== "user") {
-                alert("Invalid role. Please enter 'admin' or 'user'.");
+                swal({
+                    title: "Invalid role.",
+                    text: "Please enter 'admin' or 'user'.",
+                    icon: "error",
+                });
                 return;
             }
+
+
 
             const response = await fetch(`http://localhost:8000/user/${userId}/edit-role?new_role=${newRole}`, {
                 method: "PUT",
@@ -295,17 +313,33 @@
             });
 
             if (response.status === 200) {
-                alert("User role updated successfully.");
+                swal({
+                    title: "user role updated successfully.",
+                    text: "thank you",
+                    icon: "success",
+                    timer: 5000,
+                });
                 fetchAndPopulateUsers();
             } else {
-                alert("Failed to update user role.");
+                swal({
+                    title: "failed to update user role.",
+                    text: "try again",
+                    icon: "error",
+                    timer: 5000,
+                });
             }
         }
 
 
         // Function to delete user
         async function deleteUser(userId, username) {
-            const confirmDelete = confirm(`Are you sure you want to delete ${username}?`);
+            // const confirmDelete = confirm(`Are you sure you want to delete ${username}?`);
+
+            const confirmDelete = await swal({
+                title: `Are you sure you want to delete ${username}?`,
+                icon: "warning",
+                buttons: ["Cancel", "Delete"],
+            });
             if (!confirmDelete) {
                 return;
             }
@@ -315,7 +349,11 @@
             });
 
             if (response.status === 200) {
-                alert(`${username} deleted successfully.`);
+                swal({
+                    title: `${username} deleted successfully.`,
+                    icon: "success",
+                    timer: 5000,
+                });
                 // Refresh user data
                 fetchAndPopulateUsers();
             } else {

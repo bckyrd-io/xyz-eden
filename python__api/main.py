@@ -35,17 +35,14 @@ app.add_middleware(
 
 
 # Endpoint to capture and save images
-upload_directory = "img"
-
-
 @app.post("/capture")
 async def capture_image(file: UploadFile = UploadFile(...)):
     # Capture and save the image
     image_data = capture_and_save_image(file)
     # Assuming the capture_and_save_image function returns the image ID
     image_id = image_data["id"]
+    image_path = os.path.join("img", image_data["filename"])
     # Call the prediction function to make predictions on the saved image
-    image_path = os.path.join(upload_directory, image_data["filename"])
     predict_and_store_predictions(image_id, image_path)  # Add this line
 
     return {"message": "Image captured, saved, and predictions made successfully"}
@@ -81,11 +78,7 @@ async def get_capture_settings():
     settings = db.query(ScheduleCapture).order_by(
         desc(ScheduleCapture.timestamp)).first()
     db.close()
-
-    if settings:
-        return {"interval": settings.interval, "times": settings.times}
-    else:
-        return {"interval": 5, "times": 10}
+    return {"interval": settings.interval, "times": settings.times}
 
 
 @app.get("/images")
@@ -117,29 +110,39 @@ async def get_item_by_id(item_id: int):
 @app.get("/diseases_today")
 async def get_diseases_today():
     today = date.today()
-
     db = SessionLocal()
     # Query the database for predictions with diseases and timestamp for today
     predictions = db.query(ImagePrediction).join(CapturedImage).filter(
         ImagePrediction.disease.isnot(None),
         CapturedImage.timestamp >= today,
-        CapturedImage.timestamp < today + timedelta(days=1)
+        CapturedImage.timestamp < today + timedelta(days=2)
     )
-
     # Get the results
     results = predictions.all()
-
     if not results:
         raise HTTPException(
             status_code=404, detail="No matching records found")
+    return results
 
+
+@app.get("/diseases")
+async def get_diseases():
+    db = SessionLocal()
+    # Query the database for predictions with diseases and timestamp for today
+    predictions = db.query(ImagePrediction).join(CapturedImage).filter(
+        ImagePrediction.disease.isnot(None)
+    )
+    # Get the results
+    results = predictions.all()
+    if not results:
+        raise HTTPException(
+            status_code=404, detail="No matching records found")
     return results
 
 
 @app.get("/growth_stage")
 async def get_growth_stage():
     db = SessionLocal()
-
     try:
         # Query the database for all predictions with growth stage
         predictions = db.query(
@@ -150,22 +153,17 @@ async def get_growth_stage():
         ).join(CapturedImage).filter(
             ImagePrediction.growth_stage.isnot(None)
         ).all()
-
         # Group data by date and plant name
         data_grouped = {}
         for prediction in predictions:
             date_key = prediction.date
             plant_name = prediction.plant_name
             growth_stage = prediction.growth_stage
-
             if date_key not in data_grouped:
                 data_grouped[date_key] = {}
-
             if plant_name not in data_grouped[date_key]:
                 data_grouped[date_key][plant_name] = []
-
             data_grouped[date_key][plant_name].append(growth_stage)
-
         return data_grouped
     except Exception as e:
         raise HTTPException(
@@ -177,6 +175,7 @@ async def get_growth_stage():
 # Registration endpoint
 class UserCreate(BaseModel):
     username: str
+    email: str
     password: str
     role: Optional[UserRoleEnum] = UserRoleEnum.user
 
@@ -207,11 +206,9 @@ async def edit_user_role(user_id: int, new_role: UserRoleEnum):
     if not db_user:
         db.close()
         raise HTTPException(status_code=404, detail="User not found")
-
     db_user.role = new_role
     db.commit()
     db.close()
-
     return {"message": "User role updated successfully"}
 
 
@@ -223,11 +220,9 @@ async def delete_user(user_id: int):
     if not db_user:
         db.close()
         raise HTTPException(status_code=404, detail="User not found")
-
     db.delete(db_user)
     db.commit()
     db.close()
-
     return {"message": "User deleted successfully"}
 
 

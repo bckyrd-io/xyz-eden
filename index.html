@@ -29,7 +29,7 @@
                     <input class="form-input" id="password" name="password" type="password"
                         placeholder="Enter your password" required>
                 </label>
-                <a class="link-info forget-link" href="##">Forgot your password?</a>
+                <a class="link-info forget-link" href="signup.html">Register Account ?</a>
                 <button class="form-btn primary-default-btn transparent-btn" onclick="submitLoginForm()">Sign
                     in</button>
             </form>
@@ -39,6 +39,7 @@
     <script src="./plugins/chart.min.js"></script>
     <!-- Icons library -->
     <script src="plugins/feather.min.js"></script>
+    <script src="plugins/sweetalert.min.js"></script>
     <!-- Custom scripts -->
     <script src="js/script.js"></script>
     <script>
@@ -60,7 +61,12 @@
                 window.location.href = "reports.html";
             } else {
                 // Login failed.
-                alert("Login failed!");
+                swal({
+                    title: "login failed.",
+                    text: errorData.message || "Please try again.",
+                    icon: "error",
+                    timer: 5000,
+                });
             }
         }
 

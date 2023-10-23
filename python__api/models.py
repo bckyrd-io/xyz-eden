@@ -15,6 +15,7 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(length=50), unique=True, index=True)
+    email = Column(String(length=60), unique=True, index=True)
     hashed_password = Column(String(length=60))
     role = Column(String(length=60), default="user")
 

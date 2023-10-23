@@ -25,9 +25,14 @@
                     <input class="form-input" id="username" type="text" placeholder="Enter your username" required>
                 </label>
                 <label class="form-label-wrapper">
+                    <p class="form-label">Email</p>
+                    <input class="form-input" id="email" type="email" placeholder="Enter your Email" required>
+                </label>
+                <label class="form-label-wrapper">
                     <p class="form-label">Password</p>
                     <input class="form-input" id="password" type="password" placeholder="Enter your password" required>
                 </label>
+                <a class="link-info forget-link" href="index.html">login ?</a>
                 <button class="form-btn primary-default-btn transparent-btn"
                     onclick="submitRegisterForm()">Register</button>
             </form>
@@ -37,12 +42,15 @@
     <script src="./plugins/chart.min.js"></script>
     <!-- Icons library -->
     <script src="plugins/feather.min.js"></script>
+    <script src="plugins/sweetalert.min.js"></script>
     <script src="js/script.js"></script>
     <!-- Custom scripts -->
     <script>
         async function submitRegisterForm() {
             const username = document.querySelector("#username").value;
+            const email = document.querySelector("#email").value;
             const password = document.querySelector("#password").value;
+
 
             const response = await fetch("http://localhost:8000/register", {
                 method: "POST",
@@ -51,16 +59,31 @@
                 },
                 body: JSON.stringify({
                     username,
+                    email,
                     password,
                 }),
             });
 
-            if (response.status === 200) {
-                window.location.href = "reports.html";
+            if (response.ok) {
+                // Check if the response status is within the 200-299 range
+                swal({
+                    title: "Registration Pass.",
+                    text: "go to login page",
+                    icon: "success",
+                    timer: 5000,
+                });
             } else {
-                alert("Registration failed!");
+                // Handle non-successful response
+                swal({
+                    title: "Registration failed.",
+                    text: errorData.message || "Please try again.",
+                    icon: "error",
+                    timer: 5000,
+                });
             }
+
         }
+
     </script>
 </body>
 

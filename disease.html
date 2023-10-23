@@ -67,7 +67,7 @@
                                 <span class="icon message" aria-hidden="true"></span>
                                 Desease
                             </a>
-                            <span class="msg-counter">7</span>
+                            <!-- <span class="msg-counter">7</span> -->
                         </li>
                         <li>
                             <a class="" href="users.html"><span class="icon user-3" aria-hidden="true"></span>users</a>
@@ -127,48 +127,8 @@
                                 <span class="sr-only">To messages</span>
                                 <span class="icon notification active" aria-hidden="true"></span>
                             </button>
-                            <ul class="users-item-dropdown notification-dropdown dropdown">
-                                <li>
-                                    <a href="##">
-                                        <div class="notification-dropdown-icon info">
-                                            <i data-feather="check"></i>
-                                        </div>
-                                        <div class="notification-dropdown-text">
-                                            <span class="notification-dropdown__title">System just updated</span>
-                                            <span class="notification-dropdown__subtitle">The system has been
-                                                successfully upgraded. Read more
-                                                here.</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="##">
-                                        <div class="notification-dropdown-icon danger">
-                                            <i data-feather="info" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="notification-dropdown-text">
-                                            <span class="notification-dropdown__title">The cache is full!</span>
-                                            <span class="notification-dropdown__subtitle">Unnecessary caches take up a
-                                                lot of memory space and
-                                                interfere ...</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="##">
-                                        <div class="notification-dropdown-icon info">
-                                            <i data-feather="check" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="notification-dropdown-text">
-                                            <span class="notification-dropdown__title">New Subscriber here!</span>
-                                            <span class="notification-dropdown__subtitle">A new subscriber has
-                                                subscribed.</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="link-to-page" href="##">Go to Notifications page</a>
-                                </li>
+                            <ul class="users-item-dropdown notification-dropdown dropdown" id="notification">
+                                <!-- notification scripts list dropdown -->
                             </ul>
                         </div>
                         <div class="nav-user-wrapper">
@@ -230,11 +190,12 @@
     <script src="plugins/feather.min.js"></script>
     <!-- Custom scripts -->
     <script src="js/script.js"></script>
+    <script src="js/script-notes.js"></script>
 
     <script>
         const diseasesList = document.getElementById("diseasesList");
 
-        fetch("http://localhost:8000/diseases_today")
+        fetch("http://localhost:8000/diseases")
             .then((response) => response.json())
             .then((data) => {
                 data.forEach((entry) => {
@@ -245,7 +206,7 @@
                 ${entry.plant_name} 
             </div>
             <div class="top-cat-list__subtitle">
-                ${entry.disease} articles <span class="danger">unhelthy</span>
+                ${entry.disease} articles <span class="danger"> ${entry.disease}</span>
             </div>
         </a>
       `;
@@ -257,6 +218,8 @@
             });
 
     </script>
+
+
 
 </body>
 
