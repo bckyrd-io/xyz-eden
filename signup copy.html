@@ -17,9 +17,9 @@
     <main class="page-center">
         <article class="sign-up">
             <h1 class="sign-up__title">Get started</h1>
-            <p class="sign-up__subtitle">Start creating the best possible user experience for your customers</p>
+            <p class="sign-up__subtitle">Start creating the best possible user experience for you customers</p>
 
-            <form class="sign-up-form form" onsubmit="registerUser(event)">
+            <form class="sign-up-form form">
                 <label class="form-label-wrapper">
                     <p class="form-label">Username</p>
                     <input class="form-input" id="username" type="text" placeholder="Enter your username" required>
@@ -32,71 +32,58 @@
                     <p class="form-label">Password</p>
                     <input class="form-input" id="password" type="password" placeholder="Enter your password" required>
                 </label>
-                <a class="link-info forget-link" href="index.html">Login?</a>
-                <button class="form-btn primary-default-btn transparent-btn" type="submit">Register</button>
+                <a class="link-info forget-link" href="index.html">login ?</a>
+                <button class="form-btn primary-default-btn transparent-btn"
+                    onclick="submitRegisterForm()">Register</button>
             </form>
         </article>
     </main>
+    <!-- Chart library -->
     <script src="./plugins/chart.min.js"></script>
+    <!-- Icons library -->
     <script src="plugins/feather.min.js"></script>
     <script src="plugins/sweetalert.min.js"></script>
     <script src="js/script.js"></script>
+    <!-- Custom scripts -->
     <script>
-        async function registerUser(event) {
-            event.preventDefault();
-
+        async function submitRegisterForm() {
             const username = document.querySelector("#username").value;
             const email = document.querySelector("#email").value;
             const password = document.querySelector("#password").value;
 
-            if (username.trim() === "" || email.trim() === "" || password.trim() === "") {
+
+            const response = await fetch("http://localhost:8000/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                }),
+            });
+
+            if (response.ok) {
+                // Check if the response status is within the 200-299 range
+                swal({
+                    title: "Registration Pass.",
+                    text: "go to login page",
+                    icon: "success",
+                    timer: 5000,
+                });
+            } else {
+                // Handle non-successful response
                 swal({
                     title: "Registration failed.",
-                    text: "Please fill in all the required fields.",
-                    icon: "error",
-                    timer: 5000,
-                });
-                return;
-            }
-
-            try {
-                const response = await fetch("http://localhost:8000/register", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        username,
-                        email,
-                        password,
-                    }),
-                });
-
-                if (response.ok) {
-                    swal({
-                        title: "Registration successful",
-                        text: "Please go to the login page.",
-                        icon: "success",
-                        timer: 5000,
-                    });
-                } else {
-                    const errorData = await response.json();
-                    swal({
-                        title: "Registration failed",
-                        text: errorData.detail || "Please try again.",
-                        icon: "error",
-                        timer: 5000,
-                    });
-                }
-            } catch (error) {
-                swal({
-                    title: "Error",
-                    text: "An error occurred. Please try again later.",
+                    text: errorData.message || "Please try again.",
                     icon: "error",
                     timer: 5000,
                 });
             }
+
         }
+
     </script>
 </body>
 
