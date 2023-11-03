@@ -6,7 +6,6 @@ anyio==3.7.1
 astunparse==1.6.3
 async-timeout==4.0.3
 attrs==23.1.0
-auth0-python @ git+https://github.com/auth0/auth0-python.git@18e4defa3efe7d12d83ffe090b9f3fd3998c9045
 bcrypt==4.0.1
 cachetools==5.3.1
 certifi==2023.7.22

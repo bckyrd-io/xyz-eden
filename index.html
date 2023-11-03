@@ -20,9 +20,9 @@
             <p class="sign-up__subtitle">Sign in to your account to continue</p>
             <form class="sign-up-form form" onsubmit="submitLoginForm(event)">
                 <label class="form-label-wrapper">
-                    <p class="form-label">Email</p>
-                    <input class="form-input" id="username" name="username" type="text" placeholder="Enter your email"
-                        required>
+                    <p class="form-label">Username</p>
+                    <input class="form-input" id="username" name="username" type="text"
+                        placeholder="Enter your username" required>
                 </label>
                 <label class="form-label-wrapper">
                     <p class="form-label">Password</p>
@@ -71,6 +71,10 @@
 
                 if (response.status === 200) {
                     // Login successful! Redirect to another page.
+                    const userData = await response.json();
+                    // Store the user role in session storage
+                    sessionStorage.setItem('userRole', userData.user_role);
+
                     window.location.href = "reports.html";
                 } else {
                     const errorData = await response.json();

@@ -70,7 +70,7 @@
                             <span class="msg-counter">7</span>
                         </li>
                         <li>
-                            <a class="active" href="users.html"><span class="icon user-3"
+                            <a class="active" id="usersLink" href="users.html"><span class="icon user-3"
                                     aria-hidden="true"></span>users</a>
                         </li>
                     </ul>
@@ -87,8 +87,8 @@
                         </picture>
                     </span>
                     <div class="sidebar-user-info">
-                        <span class="sidebar-user__title">Nafisa Sh.</span>
-                        <span class="sidebar-user__subtitle">Support manager</span>
+                        <span class="sidebar-user__title" id="userTitle">None__.</span>
+                        <span class="sidebar-user__subtitle">role</span>
                     </div>
                 </a>
             </div>
@@ -192,10 +192,12 @@
                                         <i data-feather="settings" aria-hidden="true"></i>
                                         <span>Account settings</span>
                                     </a></li>
-                                <li><a class="danger" href="##">
+                                <li>
+                                    <a class="danger" id="logoutLink" href="##">
                                         <i data-feather="log-out" aria-hidden="true"></i>
                                         <span>Log out</span>
-                                    </a></li>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -237,6 +239,7 @@
     <script src="plugins/sweetalert.min.js"></script>
     <!-- Custom scripts -->
     <script src="js/script.js"></script>
+    <script src="js/script-user.js"></script>
     <script>
         // Function to fetch users and populate the table
         async function fetchAndPopulateUsers() {
@@ -364,6 +367,9 @@
         // Fetch and populate users when the page loads
         fetchAndPopulateUsers();
     </script>
+
+
+
 </body>
 
 </html>

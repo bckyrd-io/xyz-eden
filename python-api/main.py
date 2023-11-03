@@ -12,6 +12,7 @@ from sqlalchemy import desc, func
 from sqlalchemy.orm import Session  # Add this import
 from pydantic import BaseModel
 from fastapi import Depends
+import uvicorn
 # -
 from models import SessionLocal  # Add this import
 from models import User, CapturedImage, ImagePrediction, ScheduleCapture
@@ -23,6 +24,7 @@ from predict import predict_and_store_predictions  # Add this import
 
 
 app = FastAPI()
+
 
 # Configure CORS
 origins = ["*"]  # Update with the origin of your web page
@@ -180,13 +182,6 @@ class UserCreate(BaseModel):
     role: Optional[UserRoleEnum] = UserRoleEnum.user
 
 
-# @app.post("/register")
-# async def register_user(user: UserCreate):
-#     user_data = user.dict()
-#     user_data["hashed_password"] = hash_password(user.password)
-#     del user_data["password"]
-#     return create_user(user_data)
-
 # Registration endpoint
 @app.post("/register")
 async def register_user(user: UserCreate):
@@ -212,19 +207,19 @@ async def register_user(user: UserCreate):
     return created_user
 
 
-# # Login endpoint
+
+
 # @app.post("/login")
 # async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
 #     user_token = await authenticate_user(form_data.username, form_data.password)
 #     if user_token is None:
 #         raise HTTPException(
 #             status_code=401, detail="Incorrect username or password")
+    
 #     return user_token
 
-# Login endpoint
-# ...
 
-
+# # Login endpoint
 # ...
 
 @app.post("/login")
@@ -233,7 +228,21 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     if user_token is None:
         raise HTTPException(
             status_code=401, detail="Incorrect username or password")
-    return user_token
+
+    db = SessionLocal()
+    user = db.query(User).filter(User.username == form_data.username).first()
+    db.close()
+
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    response_data = {
+        "access_token": user_token,
+        "token_type": "bearer",
+        "user_role": user.role
+    }
+
+    return response_data
 
 
 # Edit user role endpoint (Requires admin privileges)
@@ -268,3 +277,7 @@ async def delete_user(user_id: int):
 async def list_users():
     users = get_all_users()
     return {"users": users}
+
+
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="0.0.0.0", port=8000)

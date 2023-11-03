@@ -51,6 +51,9 @@ async def authenticate_user(username: str, password: str):
 
     if not user or not verify_password(password, user.hashed_password):
         return None
+    
+    # Retrieve the user's role from the user object
+    user_role = user.role
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
