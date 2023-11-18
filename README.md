@@ -44,7 +44,7 @@ Follow these steps to get started with Research Plant Growth AI:
 
 5. **or install direct without requirements:**
    ```shell
-  python -m pip install --upgrade pip && pip install fastapi sqlalchemy passlib pydantic uvicorn Pillow python-jose enum34 uuid mysql-connector-python python-multipart psycopg2-binary bcrypt tensorflow
+   python -m pip install --upgrade pip && pip install fastapi sqlalchemy passlib pydantic uvicorn Pillow python-jose enum34 uuid mysql-connector-python python-multipart psycopg2-binary bcrypt tensorflow
 
 6. **cd into api folder:**
    ```shell
