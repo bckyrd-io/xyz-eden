@@ -12,10 +12,12 @@ class PlantPredictor:
         self.disease_model = disease_model
         self.growth_stage_model = growth_stage_model
         # make it null if not identified
-        self.plant_names = ["Bananas", "Tomatoes", "null"]
-        self.disease_labels = ["Late Blight", "Early Blight", "null"]
+        self.plant_names = ["Banana_plant", "Tomato_plant", "none"]
         self.growth_stage_labels = [
-            "Flowering", "Fruiting", "Vegetative", "null"]
+            "seedling", "vegetative", "flowering","fruiting", "haverst", "none"]
+        self.disease_labels = ["spider_mites","singatoka","fusarium_wilt","late_blight",
+            "mosaic_virus", "bunch_top","panama","none"]
+               
 
     # ...
     def predict(self, image_path):
