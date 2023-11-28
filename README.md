@@ -7,7 +7,7 @@ The Research Plant Growth AI takes care of your plants by automatically capturin
 ## Features
 1. **Automated Schedule:** Set up automated schedules for capturing images at predetermined intervals to consistently monitor and timestamp your plants.
 
-2. **Timestamping:** Automatically timestamp images of your plants for accurate temporal tracking of growth.
+2. **Capture Timestamping:** Automatically timestamp images of your plants for accurate temporal tracking of growth.
 
 3. **Growth Analysis:** Track essential plant growth stages, such as fruiting, vegetative, or harvest, based on the timestamped images.
 
