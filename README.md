@@ -1,26 +1,25 @@
 # Research Plant Growth AI
 
-Research Plant Growth AI is an automated plant monitoring and analysis system designed to help you monitor the growth and health of your plants effectively. It allows you to capture images of your plants at regular intervals, timestamp them, perform growth analysis, generate reports, and more.
+The Research Plant Growth AI takes care of your plants by automatically capturing pictures, tracking growth stages, and collaborating with researchers. It creates reports, supports multiple users, and sends alerts, even detecting diseases early for better plant health.
 
 ![Plant Growth Image](readme__image.jpg)
 
 ## Features
+1. **Automated Schedule:** Set up automated schedules for capturing images at predetermined intervals to consistently monitor and timestamp your plants.
 
-- **Image Capture:** Capture images of your plants at regular intervals to monitor their growth over time.
+2. **Timestamping:** Automatically timestamp images of your plants for accurate temporal tracking of growth.
 
-- **Timestamping:** Automatically timestamp images, providing accurate temporal tracking of plant growth.
+3. **Growth Analysis:** Track essential plant growth stages, such as fruiting, vegetative, or harvest, based on the timestamped images.
 
-- **Automated Schedule:** Set up automated schedules for image capturing at predetermined intervals to consistently monitor your plants.
+4. **Disease Detection:** Utilize advanced analysis techniques to identify potential plant diseases or infections, considering factors like leaf discoloration and abnormalities.
 
-- **Growth Analysis:** Track essential plant growth parameters, including height, leaf area, or number, based on the captured images.
+5. **Notifications:** Receive alerts about important daily abnormalities or issues with plant health, keeping you informed about your timestamped plants' well-being.
 
-- **Report Generation:** Generate growth reports with interactive graphs to facilitate data analysis and visualize plant growth trends.
+6. **User Management:** Support multiple user accounts with varying access levels and permissions to ensure privacy and collaboration for admins and researchers.
 
-- **User Management:** Support multiple user accounts with varying access levels and permissions to ensure privacy and collaboration.
+7. **Research Hub:** Enable other researchers to provide remarks on plant analyses submitted by users.
 
-- **Notifications:** Receive alerts about important events, such as abnormalities or issues with plant health, keeping you informed about your plants' well-being.
-
-- **Disease Detection:** Utilize advanced analysis techniques to identify potential plant diseases or infections based on various factors, including leaf discoloration and the presence of pests.
+8. **Report Generation:** Generate growth reports with interactive graphs to facilitate the visualization of daily predicted plant data.
 
 ## Getting Started
 
@@ -42,15 +41,19 @@ Follow these steps to get started with Research Plant Growth AI:
    ```shell
    pip install -r requirements.txt
 
-5. **cd into api folder:**
+5. **or install direct without requirements:**
+   ```shell
+   python -m pip install --upgrade pip && pip install fastapi sqlalchemy passlib pydantic uvicorn Pillow python-jose enum34 uuid mysql-connector-python python-multipart psycopg2-binary bcrypt tensorflow
+
+6. **cd into api folder:**
    ```shell
    cd python__api
 
-6. **run the api:**
+7. **run the api:**
    ```shell
    uvicorn --reload main:app
 
-7. **start using from this page:**
+8. **start using from this page:**
    ```shell
-   signup.html
+   index.html
  
