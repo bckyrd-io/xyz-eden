@@ -49,7 +49,7 @@ Follow these steps to get started with Research Plant Growth AI:
    ```shell
    uvicorn --reload main:app
 
-. **start using from this page:**
+7. **start using from this page:**
    ```shell
    index.html
  
