@@ -1,6 +1,6 @@
-# Research Plant Growth AI
+# The Project Eden
 
-The Research Plant Growth AI takes care of your plants by automatically capturing pictures, tracking growth stages, and collaborating with researchers. It creates reports, supports multiple users, and sends alerts, even detecting diseases early for better plant health.
+Research Eden takes care of your plants by automatically capturing pictures, tracking growth stages, and collaborating with researchers. It creates reports, supports multiple users, and sends alerts, even detecting diseases early for better plant health.
 
 ![Plant Growth Image](readme__image.jpg)
 
